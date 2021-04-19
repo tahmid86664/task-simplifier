@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap');
+* {
+  margin: 0;
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.app {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background-color: #dadbd3;
+}
+
+.app__body {
+  display: flex;
+  flex-direction: row;
+  background-color: #ededed;
+  height: 90vh;
+  width: 90vw;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
+}
+
+.todo__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.todo__form > .todo__input__container {
+  width: 90%;
+  padding: 3px 10px;
+  border-bottom: 1.2px solid #c0c0c0;
+  margin: 20px 0;
+  transition: border-color ease-in .5s;
+}
+
+.todo__form > .todo__input__container > input{
+  width: 95%;
+  background-color: #ededed;
+  border: none;
+  outline-width: 0;
+}
+
+.todo__form > .todo__input__container:hover{
+  border-color: #08c475;
+}
+
+.todo__form > .todo__input__container:focus-within{
+  border-color: #0867b4;
+}
+
+.todo__form > button {
+  width: 150px;
+  height: 40px;
+  margin-top: 50px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0867b4;
+  border-color: #08c475;
+  cursor: pointer;
+  box-shadow: -1px 4px 20px -6px rgba(11, 240, 144, 0.75);
+  transition: all ease-in 0.7s;
+}
+
+.todo__form > button:hover {
+  color: #08c475;
+  border-color: #0867b4;
+  box-shadow: -1px 4px 20px -6px rgba(19, 89, 240, 0.75);
+}
+
+
+/* funtions */

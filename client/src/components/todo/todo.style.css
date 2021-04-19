@@ -1,0 +1,43 @@
+.todo {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 15px 10px;
+    border-bottom: 1.5px solid #dbdbdb;
+    transition: 0.6s ease all;
+}
+  
+.todo:hover {
+    background-color: #c9c9c9;
+    border-color: #0881e4;
+}
+  
+.todo .todo__name {
+    font-size: 20px;
+    font-weight: 900;
+}
+  
+.todo .todo__name .MuiSvgIcon-root {
+    color: #535353;
+}
+  
+  
+.todo .todo__time {
+    font-size: 12px;
+    font-weight: 500;
+}
+  
+.todo .todo__description {
+    padding-top: 5px;
+    font-size: 16px;
+    font-weight: 550;
+}
+  
+.todo__edit {
+    display: none;
+}
+  
+.todo__edit__active {
+    display: block;
+}

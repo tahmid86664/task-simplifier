@@ -1,0 +1,89 @@
+.todo__sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+    /* height: 90vh; */
+    padding: 20px 50px;
+    border-right: 3px solid #d6d6d6;
+    animation: border-color-change 5s ease-in-out infinite;
+  }
+  
+  .todo__sidebar__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+    padding: 20px 0;
+  }
+  
+  .todo__sidebar__top > h1 {
+    color: #3b3b3bef;
+    font-weight: 800;
+  }
+  
+  .todo__sidebar__bottom {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 20px 0;
+  }
+
+  .greetings {
+    margin-top: 20px;
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+
+  .sidebar__footer__section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logout__button {
+    width: 150px;
+    height: 40px;
+    margin-top: 50px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ca123a;
+    border-color: #08c475;
+    cursor: pointer;
+    outline-width: 0;
+    box-shadow: -1px 4px 20px -6px rgba(11, 240, 144, 0.75);
+    transition: all ease-in 0.3s;
+}
+  
+.logout__button:hover {
+    color: #08c475;
+    border-color: #ca123a;
+    box-shadow: -1px 4px 20px -6px rgba(240, 19, 56, 0.75);
+}
+
+
+
+  /* funtions */
+@keyframes border-color-change {
+    0% {
+      border-color: #08c475;
+    }
+    50% {
+      border-color: #0881e4;
+    }
+    100% {
+      border-color: #db2424;
+    }
+  }
+  
+  /* 
+  @keyframes border-color-change {
+    from {
+      border-color: #08c475;
+    }
+    to {
+      border-color: #0881e4;
+    }
+  } 
+  */
