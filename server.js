@@ -65,10 +65,12 @@ app.post('/user/add', (req, res) => {
 });
 
 
-app.post('/todo/add', (req, res) => {
+app.post('/todo/add/:email', (req, res) => {
     const todo = req.body;
     console.log(todo);
-    Todos.create(todo, (err, data) => {
+    Users.updateOne({email: req.params.email}, 
+        {$push: {todos: todo}}, 
+        (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -77,37 +79,51 @@ app.post('/todo/add', (req, res) => {
     })
 });
 
-app.get('/todo/sync', (req, res) => {
-    Todos.find((err, data) => {
+app.get('/todo/sync/:email', (req, res) => {
+    console.log(req.params.email);
+    Users.findOne({email: req.params.email+'@gmail.com'}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(201).send(data);
+            res.status(201).send(data.todos);
         }
     })
 });
 
-app.post('/todo/delete', (req, res) => {
+app.post('/todo/delete/:email', (req, res) => {
     const todo_id = req.body.id;
-    Todos.deleteOne({_id: todo_id}, (err, data) => {
+
+    // if we delete an elemenmt of array inside an object
+    // we need update method not the delete method one 
+    Users.updateOne({email: req.params.email}, 
+        {$pull: {"todos": {_id: todo_id}}}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
             res.status(201).send(data);
         }
     });
+    
+    // Todos.deleteOne({_id:todo_id}, (err, data) => {
+    //     if (err) {
+    //         res.status(500).send(err);
+    //     } else {
+    //         res.status(201).send(data);
+    //     }
+    // });
 });
 
-app.post('/todo/edit', (req, res) => {
+app.post('/todo/edit/:email', (req, res) => {
     const editedTodo = req.body;
     console.log(editedTodo);
-    Todos.updateOne({_id: editedTodo._id},
+    // this is also an example of updating array element inside an object
+    Users.updateOne({email: req.params.email, "todos._id": editedTodo._id},
         {
             $set: {
-                name: editedTodo.name,
-                time: editedTodo.time,
-                reminderTime: editedTodo.reminderTime,
-                description: editedTodo.description
+                "todos.$.name": editedTodo.name,
+                "todos.$.time": editedTodo.time,
+                "todos.$.reminderTime": editedTodo.reminderTime,
+                "todos.$.description": editedTodo.description
             }
         }, (err) => {
             if (err) {
@@ -115,7 +131,7 @@ app.post('/todo/edit', (req, res) => {
             } else {
                 res.status(201).send("todo updated")
             }
-        });
+    });
 });
 
 // listen

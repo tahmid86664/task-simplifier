@@ -6,6 +6,7 @@ import './todo.style.css';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { IconButton } from '@material-ui/core';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
+import { useStateValue } from '../../context-api/StateProvider';
 
 const Todo = ({ todo }) => {
     // for editing
@@ -17,6 +18,8 @@ const Todo = ({ todo }) => {
     const [editTodoID, setEditTodoID] = useState('');
     const [isActiveEdit, setActiveEdit] = useState(false);
 
+    const [{user}, dispatch] = useStateValue();
+
     const editTodo = async (event, id) => {
         // check all the attributes value are same or not
         // if same then no need to update
@@ -25,7 +28,7 @@ const Todo = ({ todo }) => {
 
         event.preventDefault();
 
-        await axios.post('/todo/edit', {
+        await axios.post('/todo/edit/'+user.email, {
         _id: id,
         name: editTodoName,
         time: new Date().toLocaleString(),
@@ -43,7 +46,7 @@ const Todo = ({ todo }) => {
     }
 
     const deleteTodo = async (id) => {
-        await axios.post('/todo/delete', {
+        await axios.post('/todo/delete/'+user.email, {
         id: id 
         })
         // console.log("delete hitted " + data);

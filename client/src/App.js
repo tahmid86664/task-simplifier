@@ -11,33 +11,50 @@ import { useStateValue } from './context-api/StateProvider';
 function App() {
   const [todos, setTodos] = useState([]);
   const [{ user }] = useStateValue();
+  const [userEmail, setEmail] = useState('');
+  const [isUserAdded, setUserAdded] = useState(false);
+
+  const handleCallBackUserAdded = (childData) => {
+    setUserAdded(childData);
+  }
+
+  const handleCallBackUser = (childData) => {
+    const tempUser = childData;
+    if (tempUser === null) {
+      setEmail('');
+    } else {
+      setEmail(tempUser.email);
+    }
+  }
 
   useEffect(() => {
-    if(user){
+    if(user && !isUserAdded){
       axios.post('/user/add', {
         name: user.displayName,
         email: user.email,
         todos: []
       })
-    } else {
-      console.log("User already in database");
+      setUserAdded(true);
+      // console.log("on time called")
     }
-  }, [user]);
+  }, [user, isUserAdded]);
 
   useEffect(() => {
-    axios.get('/todo/sync').then((res) => {
+    if(userEmail !== ''){
+    axios.get('/todo/sync/'+userEmail.split("@")[0]).then((res) => {
       setTodos(res.data);
     });
-  }, [todos]);
+    }
+  }, [todos, userEmail]);
 
-  // console.log(inputTodoName);
+  // console.log(userEmail);
   return (
     <div className="app">
       {!user ? (
-        <Login />
+        <Login parentCallbackForUser={handleCallBackUser} />
       ) : (
         <div className="app__body">
-          <Sidebar />
+          <Sidebar parentCallbackForUser={handleCallBackUser} parentCallBackForUserAdded={handleCallBackUserAdded} />
           <Todos todos={todos}/>
         </div>
       )}

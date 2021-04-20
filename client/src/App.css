@@ -35,6 +35,11 @@
   transition: border-color ease-in .5s;
 }
 
+.todo__form > .todo__input__container > .MuiSvgIcon-root {
+  color: #535353;
+  font-size: 18px;
+}
+
 .todo__form > .todo__input__container > input{
   width: 95%;
   background-color: #ededed;

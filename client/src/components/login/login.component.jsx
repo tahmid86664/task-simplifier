@@ -6,7 +6,7 @@ import { actionTypes } from '../../context-api/reducer';
 
 import './login.style.css';
 
-const Login = () => {
+const Login = ({ parentCallbackForUser }) => {
     const [{}, dispatch] = useStateValue();
 
     const loginUsingGoogle = () => {
@@ -15,13 +15,14 @@ const Login = () => {
                 type: actionTypes.SET_USER,
                 user: result.user
             })
+            parentCallbackForUser(result.user);
         }).catch(err => alert(err.message));
     }
 
     return (
         <div className="login">
             <h1 className="login__title">Task Simplifier</h1>
-            <p className="login__subtitle">Simplify you day</p>
+            <p className="login__subtitle">Simplify your day</p>
             <button className="login__button" onClick={loginUsingGoogle}>
                 Login using Google
             </button>

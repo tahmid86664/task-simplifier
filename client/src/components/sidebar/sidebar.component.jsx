@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import axios from '../../axios/axios';
+import TimeField from 'react-simple-timefield';
 
 import { auth } from '../../firebase/firebase';
+import { actionTypes } from '../../context-api/reducer';
 import { useStateValue } from '../../context-api/StateProvider';
 
 import './sidebar.style.css';
-import { actionTypes } from '../../context-api/reducer';
 
-const Sidebar = () => {
+import AccessAlarmsIcon from '@material-ui/icons/AccessAlarms';
+
+const Sidebar = ({ parentCallbackForUser, parentCallBackForUserAdded }) => {
     const [inputTodoName, setInputTodoName] = useState('');
-    const [inputTodoReminder, setInputTodoReminder] = useState('');
+    const [inputTodoReminder, setInputTodoReminder] = useState('12:00');
     const [inputTodoDescription, setInputTodoDescription] = useState('');
     const [{ user }, dispatch] = useStateValue();
 
     const addTodo = async (event) => {
         event.preventDefault();
         // setTodos([...todos, input]);
-    
+        const date = new Date();
         if (inputTodoName !== ''){
-          await axios.post('/todo/add', {
+          await axios.post('/todo/add/'+user.email, {
+            _id: inputTodoName+date.getHours()+''+date.getMinutes()+''+date.getSeconds(),
             name: inputTodoName,
             time: new Date().toLocaleString(),
             reminderTime: inputTodoReminder,
@@ -33,13 +37,16 @@ const Sidebar = () => {
     }
 
     const logout = () => {
-      auth.signOut().then(result => 
+      auth.signOut().then(result => {
         dispatch({
           type: actionTypes.SET_USER,
           user: null
-        })  
-      ).catch(err => alert(err.message));
+        });
+        parentCallbackForUser(null);
+        parentCallBackForUserAdded(false);  
+      }).catch(err => alert(err.message));
     }
+
 
     return (
         <div className="todo__sidebar">
@@ -53,7 +60,9 @@ const Sidebar = () => {
                 <input className="todo__input" placeholder="todo name" value={inputTodoName} onChange={event => setInputTodoName(event.target.value)}/>
               </div>
               <div className="todo__input__container">
-                <input className="todo__input" placeholder="time you want to remind" value={inputTodoReminder} onChange={event => setInputTodoReminder(event.target.value)}/>
+                <AccessAlarmsIcon />
+                <TimeField value={inputTodoReminder} onChange={event => setInputTodoReminder(event.target.value)}/>
+                {/* <input className="todo__input" placeholder="time you want to remind" value={inputTodoReminder} onChange={event => setInputTodoReminder(event.target.value)}/> */}
               </div>
               <div className="todo__input__container">
                 <input className="todo__input" placeholder="give a description" value={inputTodoDescription} onChange={event => setInputTodoDescription(event.target.value)}/>
