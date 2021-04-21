@@ -25,7 +25,10 @@ const port = process.env.PORT || 9000;
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true})); 
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: ['https://task-simplifier.herokuapp.com', 'http://task-simplifier.herokuapp.com', 'task-simplifier.herokuapp.com','http://localhost:3000']
+}));
 
 
 // db config
