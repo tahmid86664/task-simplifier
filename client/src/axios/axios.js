@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:9000'
+    baseURL: 'https://task-simplifier.herokuapp.com'
 }); // when deploy change the domain with the baseurl
 
 export default instance;
