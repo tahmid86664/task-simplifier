@@ -42,7 +42,7 @@ function App() {
       });
       }
     }
-  }, [todos, userEmail, isNewUser]);
+  }, [todos, userEmail, isNewUser, user]);
 
   // console.log(userEmail);
   return (
