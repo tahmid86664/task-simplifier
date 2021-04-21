@@ -61,11 +61,11 @@ app.post('/user/add', (req, res) => {
     const uid = user.uid;
 
     // search user
-    Users.find({uid: uid}, (err, data) => {
+    Users.findOne({uid: uid}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            if(data.length === 0){
+            if(data === null){
                 console.log("new user should be inserted");
                 Users.create(user, (err, data) => {
                     if (err) {
@@ -75,7 +75,8 @@ app.post('/user/add', (req, res) => {
                     }
                 })
             }else {
-                console.log("user is already in database")
+                console.log("user is already in database");
+                res.status(201).send(data);
             }
         }
     })
