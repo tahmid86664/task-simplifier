@@ -9,6 +9,7 @@ import path from 'path';
 
 // app config
 const app = express();
+const __dirname = path.resolve();
 
 // serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
