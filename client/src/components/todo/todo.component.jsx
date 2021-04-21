@@ -28,7 +28,7 @@ const Todo = ({ todo }) => {
 
         event.preventDefault();
 
-        await axios.post('/todo/edit/'+user.email, {
+        await axios.post('/todo/edit/'+user.uid, {
         _id: id,
         name: editTodoName,
         time: new Date().toLocaleString(),
@@ -46,7 +46,7 @@ const Todo = ({ todo }) => {
     }
 
     const deleteTodo = async (id) => {
-        await axios.post('/todo/delete/'+user.email, {
+        await axios.post('/todo/delete/'+user.uid, {
         id: id 
         })
         // console.log("delete hitted " + data);

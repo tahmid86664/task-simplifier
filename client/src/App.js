@@ -11,47 +11,44 @@ import { useStateValue } from './context-api/StateProvider';
 function App() {
   const [todos, setTodos] = useState([]);
   const [{ user }] = useStateValue();
-  const [userEmail, setEmail] = useState('');
-  const [isUserAdded, setUserAdded] = useState(false);
+  const [userEmail, setUID] = useState('');
+  const [isNewUser, setNewUser] = useState(false);
 
   const handleCallBackUserAdded = (childData) => {
-    setUserAdded(childData);
+    setNewUser(childData);
   }
 
   const handleCallBackUser = (childData) => {
     const tempUser = childData;
     if (tempUser === null) {
-      setEmail('');
+      setUID('');
+      setTodos([]);
     } else {
-      setEmail(tempUser.email);
+      setUID(tempUser.uid);
     }
   }
 
   useEffect(() => {
-    if(user && !isUserAdded){
-      axios.post('/user/add', {
-        name: user.displayName,
-        email: user.email,
-        todos: []
-      })
-      setUserAdded(true);
-      // console.log("on time called")
+    if(isNewUser){
+      if(userEmail !== ''){
+        axios.get('/todo/sync/'+userEmail).then((res) => {
+          setTodos(res.data);
+        });
+      }
+    } else {
+      if ( user ) {
+      axios.get('/todo/sync/'+user.uid).then((res) => {
+        setTodos(res.data);
+      });
+      }
     }
-  }, [user, isUserAdded]);
-
-  useEffect(() => {
-    if(userEmail !== ''){
-    axios.get('/todo/sync/'+userEmail.split("@")[0]).then((res) => {
-      setTodos(res.data);
-    });
-    }
-  }, [todos, userEmail]);
+  }, [todos, userEmail, isNewUser]);
 
   // console.log(userEmail);
   return (
     <div className="app">
       {!user ? (
-        <Login parentCallbackForUser={handleCallBackUser} />
+        <Login parentCallbackForUser={handleCallBackUser} parentCallBackForUserAdded={handleCallBackUserAdded} />
       ) : (
         <div className="app__body">
           <Sidebar parentCallbackForUser={handleCallBackUser} parentCallBackForUserAdded={handleCallBackUserAdded} />

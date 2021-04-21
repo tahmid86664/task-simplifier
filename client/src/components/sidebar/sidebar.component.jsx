@@ -21,7 +21,7 @@ const Sidebar = ({ parentCallbackForUser, parentCallBackForUserAdded }) => {
         // setTodos([...todos, input]);
         const date = new Date();
         if (inputTodoName !== ''){
-          await axios.post('/todo/add/'+user.email, {
+          await axios.post('/todo/add/'+user.uid, {
             _id: inputTodoName+date.getHours()+''+date.getMinutes()+''+date.getSeconds(),
             name: inputTodoName,
             time: new Date().toLocaleString(),
@@ -31,7 +31,7 @@ const Sidebar = ({ parentCallbackForUser, parentCallBackForUserAdded }) => {
         }
     
         setInputTodoName('');
-        setInputTodoReminder('');
+        setInputTodoReminder('12:00');
         setInputTodoDescription('');
         console.log('fired');
     }

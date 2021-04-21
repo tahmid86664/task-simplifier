@@ -41,10 +41,10 @@ app.get('/', (req, res) => {
 
 app.post('/user/add', (req, res) => {
     const user = req.body;
-    const email = user.email;
+    const uid = user.uid;
 
     // search user
-    Users.find({email: email}, (err, data) => {
+    Users.find({uid: uid}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -65,10 +65,10 @@ app.post('/user/add', (req, res) => {
 });
 
 
-app.post('/todo/add/:email', (req, res) => {
+app.post('/todo/add/:uid', (req, res) => {
     const todo = req.body;
     console.log(todo);
-    Users.updateOne({email: req.params.email}, 
+    Users.updateOne({"uid": req.params.uid}, 
         {$push: {todos: todo}}, 
         (err, data) => {
         if (err) {
@@ -79,23 +79,28 @@ app.post('/todo/add/:email', (req, res) => {
     })
 });
 
-app.get('/todo/sync/:email', (req, res) => {
-    console.log(req.params.email);
-    Users.findOne({email: req.params.email+'@gmail.com'}, (err, data) => {
+app.get('/todo/sync/:uid', (req, res) => {
+    console.log(req.params.uid);
+    if(req.params.uid !== '' || req.params.uid !== null){
+    Users.findOne({"uid": req.params.uid}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(201).send(data.todos);
+            if (data !== null) {
+                res.status(201).send(data.todos);
+                console.log(data.todos);
+            }
         }
-    })
+    });
+    }
 });
 
-app.post('/todo/delete/:email', (req, res) => {
+app.post('/todo/delete/:uid', (req, res) => {
     const todo_id = req.body.id;
 
     // if we delete an elemenmt of array inside an object
     // we need update method not the delete method one 
-    Users.updateOne({email: req.params.email}, 
+    Users.updateOne({"uid": req.params.uid}, 
         {$pull: {"todos": {_id: todo_id}}}, (err, data) => {
         if (err) {
             res.status(500).send(err);
@@ -113,11 +118,11 @@ app.post('/todo/delete/:email', (req, res) => {
     // });
 });
 
-app.post('/todo/edit/:email', (req, res) => {
+app.post('/todo/edit/:uid', (req, res) => {
     const editedTodo = req.body;
     console.log(editedTodo);
     // this is also an example of updating array element inside an object
-    Users.updateOne({email: req.params.email, "todos._id": editedTodo._id},
+    Users.updateOne({"uid": req.params.uid, "todos._id": editedTodo._id},
         {
             $set: {
                 "todos.$.name": editedTodo.name,
